@@ -4,18 +4,20 @@ A Django-based web application for managing student records.
 1. INTRODUCTION  
 The Smart Classroom Management System is a web application developed using Django that allows students, teachers, and school management to interact through a centralized system. Each user has access to different functionalities based on their role. The system is designed to digitize classroom workflows like attendance marking, assignment submissions, results, and scheduling. 
 Django's Model-View-Template (MVT) architecture allowed us to keep the project modular and easy to scale. 
+
   
 2. OBJECTIVE  
-1.	To build a role-based smart classroom system using Django. 
-2.	To manage data such as attendance, assignments, class schedules, and student performance. 
-3.	To implement full CRUD operations using Django's ORM and SQLite, Object Oriented programming  
-4.	To gain practical experience with backend logic, frontend rendering, and database management. 
+   To build a role-based smart classroom system using Django. 
+   To manage data such as attendance, assignments, class schedules, and student performance. 
+   To implement full CRUD operations using Django's ORM and SQLite, Object Oriented programming  
+   To gain practical experience with backend logic, frontend rendering, and database management. 
+
  
 3. PROPOSED WORK   
 The project provides a login portal for three types of users: 
-1.	Students can check their class schedules, view assignments, results, and deposit fees. 
-2.	Teachers can mark attendance, give assignments, and enter student marks, view schedules. 
-3.	School Management can manage classes, schedules, and user roles (add/delete/modify). 
+   Students can check their class schedules, view assignments, results, and deposit fees. 
+   Teachers can mark attendance, give assignments, and enter student marks, view schedules. 
+   School Management can manage classes, schedules, and user roles (add/delete/modify). 
 We used Object-Oriented Programming (OOP) to structure our models and views. Django’s in-built authentication and admin panel helped manage users and data securely and efficiently. 
 
 
