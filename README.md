@@ -37,32 +37,8 @@ Run the development server:
 python manage.py runserver
 Access the application at http://127.0.0.1:8000/
 
-5. Project Structure
 
-SmartClass/
-├── manage.py
-├── SmartClass/
-│   ├── __init__.py
-│   ├── settings.py
-│   ├── urls.py
-│   ├── asgi.py
-│   └── wsgi.py
-└── students/
-    ├── migrations/
-    ├── templates/
-    │   └── students/
-    │       ├── base.html
-    │       ├── home.html
-    │       ├── add.html
-    │       └── update.html
-    ├── __init__.py
-    ├── admin.py
-    ├── apps.py
-    ├── models.py
-    ├── tests.py
-    └── views.py
-
-6.	TOOLS & TECHNOLOGIES USED  
+5.	TOOLS & TECHNOLOGIES USED  
 •  Programming Language: Python 
 •  Framework: Django 
 •	Database: SQLite (default DB for Django projects) 
