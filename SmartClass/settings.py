@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-plp5%uvjcmu9k17v8)73#n*ja49h2qeli+cg#%1_nv!u2o2_r8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['smartclass-3nkm.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -130,6 +130,10 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
+# Add this line to the settings.py file
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -146,3 +150,4 @@ CSRF_USE_SESSIONS = True
 SESSION_COOKIE_SECURE = False  # Set to True in production
 SESSION_COOKIE_HTTPONLY = True
 SESSION_SAVE_EVERY_REQUEST = True
+
