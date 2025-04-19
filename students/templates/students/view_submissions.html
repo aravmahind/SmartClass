@@ -1,0 +1,76 @@
+{% extends 'students/base.html' %}
+
+{% block title %}View Submissions - SmartClass{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h4>Submissions for: {{ assignment.title }}</h4>
+        </div>
+        <div class="card-body">
+            <div class="mb-4">
+                <h5>Assignment Details</h5>
+                <p><strong>Description:</strong> {{ assignment.description }}</p>
+                <p><strong>Due Date:</strong> {{ assignment.due_date }}</p>
+            </div>
+            
+            <h5>Student Submissions</h5>
+            {% if submissions %}
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Submission Date</th>
+                                <th>File</th>
+                                <th>Grade</th>
+                                <th>Feedback</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for submission in submissions %}
+                            <tr>
+                                <td>{{ submission.student.user.get_full_name }}</td>
+                                <td>{{ submission.submitted_at }}</td>
+                                <td>
+                                    <a href="{{ submission.submission_file.url }}" class="btn btn-sm btn-primary" target="_blank">
+                                        View File
+                                    </a>
+                                </td>
+                                <td>
+                                    {% if submission.grade %}
+                                        {{ submission.grade }}
+                                    {% else %}
+                                        Not Graded
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if submission.feedback %}
+                                        {{ submission.feedback|truncatechars:50 }}
+                                    {% else %}
+                                        No feedback
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'grade_submission' submission.id %}" class="btn btn-sm btn-success">
+                                        Grade
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p>No submissions yet.</p>
+            {% endif %}
+            
+            <div class="mt-4">
+                <a href="{% url 'teacher_dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

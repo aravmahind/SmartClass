@@ -1,0 +1,268 @@
+{% extends 'students/base.html' %}
+
+{% block title %}Student Dashboard - SmartClass{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Welcome Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <h4 class="mb-1">Welcome back, {{ student.user.get_full_name }}</h4>
+                            <p class="text-muted mb-0">
+                                <i class="bi bi-info-circle"></i> 
+                                {{ student.department }} | Semester {{ student.semester }} | Division {{ student.division }}
+                                {% if student.batch %}| Batch {{ student.batch }}{% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="stats-card">
+                <h3>{{ today_schedule|length }}</h3>
+                <p>Classes Today</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card">
+                <h3>{{ assignments|length }}</h3>
+                <p>Active Assignments</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card">
+                <h3>{{ attendance|length }}</h3>
+                <p>Attendance Records</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card">
+                <a href="{% url 'student_fee_details' %}" class="text-decoration-none text-dark">
+                    <h3><i class="bi bi-cash-stack"></i></h3>
+                    <p>Fee Details</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Today's Schedule -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4><i class="bi bi-calendar-day"></i> Today's Schedule</h4>
+                    <a href="{% url 'student_schedule' %}" class="btn btn-sm btn-primary">
+                        <i class="bi bi-calendar3"></i> View Full Schedule
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if today_schedule %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Subject</th>
+                                        <th>Teacher</th>
+                                        <th>Type</th>
+                                        <th>Classroom</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for schedule in today_schedule %}
+                                    <tr>
+                                        <td>
+                                            <i class="bi bi-clock"></i>
+                                            {{ schedule.start_time|time:"H:i" }} - {{ schedule.end_time|time:"H:i" }}
+                                        </td>
+                                        <td>{{ schedule.subject }}</td>
+                                        <td>{{ schedule.teacher.user.get_full_name }}</td>
+                                        <td>
+                                            <span class="badge {% if schedule.class_type == 'LAB' %}bg-danger{% else %}bg-primary{% endif %}">
+                                                {{ schedule.get_class_type_display }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <i class="bi bi-building"></i>
+                                            {{ schedule.classroom }}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="bi bi-calendar-x h1 text-muted"></i>
+                            <p class="text-muted mt-2">No classes scheduled for today.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assignments -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4><i class="bi bi-file-earmark-text"></i> Assignments</h4>
+                </div>
+                <div class="card-body">
+                    {% if assignments %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Subject</th>
+                                        <th>Title</th>
+                                        <th>Due Date</th>
+                                        <th>Status</th>
+                                        <th>Grade</th>
+                                        <th>Feedback</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for assignment in assignments %}
+                                    <tr>
+                                        <td>{{ assignment.subject }}</td>
+                                        <td>{{ assignment.title }}</td>
+                                        <td>
+                                            <i class="bi bi-calendar-event"></i>
+                                            {{ assignment.due_date }}
+                                        </td>
+                                        <td>
+                                            {% if assignment.is_submitted %}
+                                                <span class="badge bg-success">
+                                                    <i class="bi bi-check-circle"></i> Submitted
+                                                </span>
+                                            {% else %}
+                                                <span class="badge bg-warning">
+                                                    <i class="bi bi-exclamation-circle"></i> Pending
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if assignment.submission and assignment.submission.grade %}
+                                                <span class="badge bg-info">{{ assignment.submission.grade }}</span>
+                                            {% elif assignment.is_submitted %}
+                                                <span class="text-muted">Not graded yet</span>
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if assignment.submission and assignment.submission.feedback %}
+                                                <span class="text-wrap">{{ assignment.submission.feedback|truncatechars:50 }}</span>
+                                            {% elif assignment.is_submitted %}
+                                                <span class="text-muted">No feedback yet</span>
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if not assignment.is_submitted %}
+                                                <a href="{% url 'submit_assignment' assignment.id %}" 
+                                                   class="btn btn-sm btn-primary">
+                                                    <i class="bi bi-upload"></i> Submit
+                                                </a>
+                                            {% elif assignment.submission %}
+                                                <a href="{{ assignment.submission.submission_file.url }}" 
+                                                   class="btn btn-sm btn-info" 
+                                                   target="_blank">
+                                                    <i class="bi bi-file-earmark"></i> View
+                                                </a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="bi bi-file-earmark-x h1 text-muted"></i>
+                            <p class="text-muted mt-2">No assignments assigned yet.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Attendance -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4><i class="bi bi-calendar-check"></i> Recent Attendance</h4>
+                </div>
+                <div class="card-body">
+                    {% if attendance %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Subject</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for record in attendance %}
+                                    <tr>
+                                        <td>
+                                            <i class="bi bi-calendar2"></i>
+                                            {{ record.date }}
+                                        </td>
+                                        <td>{{ record.subject }}</td>
+                                        <td>
+                                            {% if record.status %}
+                                                <span class="badge bg-success">
+                                                    <i class="bi bi-check-circle"></i> Present
+                                                </span>
+                                            {% else %}
+                                                <span class="badge bg-danger">
+                                                    <i class="bi bi-x-circle"></i> Absent
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="bi bi-calendar-x h1 text-muted"></i>
+                            <p class="text-muted mt-2">No attendance records found.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Account Settings</h5>
+        </div>
+        <div class="card-body">
+            <a href="{% url 'change_password' %}" class="btn btn-primary">
+                <i class="fas fa-key"></i> Change Password
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %} 

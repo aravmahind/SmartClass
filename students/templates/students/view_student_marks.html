@@ -1,0 +1,66 @@
+{% extends 'students/base.html' %}
+
+{% block title %}Student Marks - {{ student.user.get_full_name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Student Marks</h2>
+        <a href="{% url 'view_student_list' %}" class="btn btn-secondary">Back to Student List</a>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h4>Student Information</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Name:</strong> {{ student.user.get_full_name }}</p>
+                    <p><strong>Roll Number:</strong> {{ student.roll_number }}</p>
+                    <p><strong>Department:</strong> {{ student.department }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Semester:</strong> {{ student.semester }}</p>
+                    <p><strong>Division:</strong> {{ student.division }}</p>
+                    <p><strong>Batch:</strong> {{ student.batch|default:"Not Assigned" }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h4>Marks Records</h4>
+        </div>
+        <div class="card-body">
+            {% if marks_records %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Marks</th>
+                            <th>Date</th>
+                            <th>Marked By</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in marks_records %}
+                        <tr>
+                            <td>{{ record.subject }}</td>
+                            <td>{{ record.marks }}</td>
+                            <td>{{ record.date|date:"d M Y" }}</td>
+                            <td>{{ record.teacher.user.get_full_name }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-center">No marks records found.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

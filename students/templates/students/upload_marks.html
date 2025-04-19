@@ -1,0 +1,46 @@
+{% extends 'students/base.html' %}
+
+{% block title %}Upload Marks - SmartClass{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4>Upload Student Marks</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="student" class="form-label">Student</label>
+                        {{ form.student }}
+                        {% if form.student.errors %}
+                            <div class="text-danger">{{ form.student.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Subject</label>
+                        {{ form.subject }}
+                        {% if form.subject.errors %}
+                            <div class="text-danger">{{ form.subject.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="marks" class="form-label">Marks</label>
+                        {{ form.marks }}
+                        {% if form.marks.errors %}
+                            <div class="text-danger">{{ form.marks.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="date" class="form-label">Date</label>
+                        {{ form.date }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload Marks</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

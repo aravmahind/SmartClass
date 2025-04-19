@@ -1,0 +1,199 @@
+{% extends 'students/base.html' %}
+
+{% block title %}Teacher Dashboard - SmartClass{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Welcome, {{ user.get_full_name }}</h2>
+        </div>
+    </div>
+
+    <!-- Today's Schedule -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Today's Schedule</h4>
+                </div>
+                <div class="card-body">
+                    {% if today_schedule %}
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Subject</th>
+                                        <th>Type</th>
+                                        <th>Division</th>
+                                        <th>Batch</th>
+                                        <th>Classroom</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for schedule in today_schedule %}
+                                        <tr>
+                                            <td>{{ schedule.start_time|time:"H:i" }} - {{ schedule.end_time|time:"H:i" }}</td>
+                                            <td>{{ schedule.subject }}</td>
+                                            <td>
+                                                <span class="badge {% if schedule.class_type == 'LAB' %}bg-danger{% else %}bg-primary{% endif %}">
+                                                    {{ schedule.get_class_type_display }}
+                                                </span>
+                                            </td>
+                                            <td>{{ schedule.division }}</td>
+                                            <td>{{ schedule.batch|default:"-" }}</td>
+                                            <td>{{ schedule.classroom }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            No classes scheduled for today.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Weekly Schedule -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Weekly Schedule</h4>
+                </div>
+                <div class="card-body">
+                    {% if weekly_schedule %}
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Day</th>
+                                        <th>Time</th>
+                                        <th>Subject</th>
+                                        <th>Type</th>
+                                        <th>Division</th>
+                                        <th>Batch</th>
+                                        <th>Classroom</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for schedule in weekly_schedule %}
+                                        <tr>
+                                            <td>{{ schedule.get_day_display }}</td>
+                                            <td>{{ schedule.start_time|time:"H:i" }} - {{ schedule.end_time|time:"H:i" }}</td>
+                                            <td>{{ schedule.subject }}</td>
+                                            <td>
+                                                <span class="badge {% if schedule.class_type == 'LAB' %}bg-danger{% else %}bg-primary{% endif %}">
+                                                    {{ schedule.get_class_type_display }}
+                                                </span>
+                                            </td>
+                                            <td>{{ schedule.division }}</td>
+                                            <td>{{ schedule.batch|default:"-" }}</td>
+                                            <td>{{ schedule.classroom }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            No schedule available for this week.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <!-- Quick Actions -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Quick Actions</h4>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'create_assignment' %}" class="btn btn-primary">
+                            <i class="bi bi-plus-circle"></i> Create Assignment
+                        </a>
+                        <a href="{% url 'upload_marks' %}" class="btn btn-success">
+                            <i class="bi bi-file-earmark-text"></i> Upload Marks
+                        </a>
+                        <a href="{% url 'mark_attendance' %}" class="btn btn-info">
+                            <i class="bi bi-check-square"></i> Mark Attendance
+                        </a>
+                        <a href="{% url 'view_student_list' %}" class="btn btn-secondary">
+                            <i class="bi bi-people"></i> View Students
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assignments -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Your Assignments</h4>
+                </div>
+                <div class="card-body">
+                    {% if assignments_by_title %}
+                        {% for title, assignments in assignments_by_title.items %}
+                            <div class="mb-4">
+                                <h5 class="mb-3">{{ title }}</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Description</th>
+                                                <th>Due Date</th>
+                                                <th>Created At</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for assignment in assignments %}
+                                                <tr>
+                                                    <td>{{ assignment.description|truncatechars:50 }}</td>
+                                                    <td>{{ assignment.due_date }}</td>
+                                                    <td>{{ assignment.created_at }}</td>
+                                                    <td>
+                                                        <a href="{% url 'view_submissions' assignment.id %}" class="btn btn-sm btn-primary">
+                                                            View Submissions
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="alert alert-info">
+                            No assignments created yet.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Account Settings</h5>
+        </div>
+        <div class="card-body">
+            <a href="{% url 'teacher_change_password' %}" class="btn btn-primary">
+                <i class="fas fa-key"></i> Change Password
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %} 

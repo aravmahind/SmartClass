@@ -1,0 +1,145 @@
+{% extends 'students/base.html' %}
+
+{% block title %}Admin Dashboard - SmartClass{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Welcome Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <h4 class="mb-1">Welcome back, {{ user.get_full_name }}</h4>
+                            <p class="text-muted mb-0">
+                                <i class="bi bi-shield-check"></i> System Administrator
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-people"></i> Student Management</h5>
+                    <p class="card-text">Manage student registrations, view details, and track performance.</p>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'register_student' %}" class="btn btn-primary">
+                            <i class="bi bi-person-plus"></i> Register Student
+                        </a>
+                        <a href="{% url 'view_students' %}" class="btn btn-info">
+                            <i class="bi bi-list-ul"></i> View Students
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-person-badge"></i> Teacher Management</h5>
+                    <p class="card-text">Manage teacher registrations and view their schedules.</p>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'register_teacher' %}" class="btn btn-primary">
+                            <i class="bi bi-person-plus"></i> Register Teacher
+                        </a>
+                        <a href="{% url 'view_teachers' %}" class="btn btn-info">
+                            <i class="bi bi-list-ul"></i> View Teachers
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-calendar3"></i> Schedule Management</h5>
+                    <p class="card-text">Create and manage class schedules for all divisions.</p>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'create_schedule' %}" class="btn btn-primary">
+                            <i class="bi bi-plus-circle"></i> Create Schedule
+                        </a>
+                        <a href="{% url 'view_schedules' %}" class="btn btn-info">
+                            <i class="bi bi-calendar-check"></i> View Schedules
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-cash-stack"></i> Fee Management</h5>
+                    <p class="card-text">Manage fee structure and record student payments.</p>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'manage_fee_structure' %}" class="btn btn-primary">
+                            <i class="bi bi-gear"></i> Fee Structure
+                        </a>
+                        <a href="{% url 'record_fee_payment' %}" class="btn btn-info">
+                            <i class="bi bi-cash"></i> Record Payment
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Password Management</h5>
+                    <p class="card-text">Reset passwords for students and teachers.</p>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'admin_reset_student_password' %}" class="btn btn-primary">Reset Student Password</a>
+                        <a href="{% url 'admin_reset_teacher_password' %}" class="btn btn-outline-primary mt-2">Reset Teacher Password</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4><i class="bi bi-activity"></i> Recent Activity</h4>
+                </div>
+                <div class="card-body">
+                    {% if recent_activity %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Activity</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for activity in recent_activity %}
+                                        <tr>
+                                            <td>{{ activity.timestamp|date:"M d, Y H:i" }}</td>
+                                            <td>{{ activity.title }}</td>
+                                            <td>{{ activity.description }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="bi bi-activity h1 text-muted"></i>
+                            <p class="text-muted mt-2">No recent activity found.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,45 @@
+{% extends 'students/base.html' %}
+
+{% block title %}Delete Schedule - SmartClass{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">Delete Schedule</h4>
+                </div>
+                <div class="card-body">
+                    <p>Are you sure you want to delete the following schedule?</p>
+                    
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ schedule.subject }}</h5>
+                            <p class="card-text">
+                                <strong>Teacher:</strong> {{ schedule.teacher.user.get_full_name }}<br>
+                                <strong>Day:</strong> {{ schedule.get_day_display }}<br>
+                                <strong>Time:</strong> {{ schedule.start_time|time:"H:i" }} - {{ schedule.end_time|time:"H:i" }}<br>
+                                <strong>Type:</strong> {{ schedule.get_class_type_display }}<br>
+                                <strong>Division:</strong> {{ schedule.division }}<br>
+                                {% if schedule.batch %}
+                                    <strong>Batch:</strong> {{ schedule.batch }}<br>
+                                {% endif %}
+                                <strong>Classroom:</strong> {{ schedule.classroom }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-danger">Delete Schedule</button>
+                            <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,57 @@
+{% extends 'students/base.html' %}
+
+{% block title %}My Schedule - SmartClass{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">My Weekly Schedule</h4>
+                </div>
+                <div class="card-body">
+                    {% if schedule_by_day %}
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Day</th>
+                                        <th>Time</th>
+                                        <th>Subject</th>
+                                        <th>Teacher</th>
+                                        <th>Type</th>
+                                        <th>Classroom</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for day, schedules in schedule_by_day.items %}
+                                        {% for schedule in schedules %}
+                                            <tr>
+                                                <td>{{ schedule.get_day_display }}</td>
+                                                <td>{{ schedule.start_time|time:"H:i" }} - {{ schedule.end_time|time:"H:i" }}</td>
+                                                <td>{{ schedule.subject }}</td>
+                                                <td>{{ schedule.teacher.user.get_full_name }}</td>
+                                                <td>
+                                                    <span class="badge {% if schedule.class_type == 'LAB' %}bg-danger{% else %}bg-primary{% endif %}">
+                                                        {{ schedule.get_class_type_display }}
+                                                    </span>
+                                                </td>
+                                                <td>{{ schedule.classroom }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            No schedule found for your division and batch.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

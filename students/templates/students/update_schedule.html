@@ -1,0 +1,173 @@
+{% extends 'students/base.html' %}
+
+{% block title %}Update Schedule - SmartClass{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">Update Schedule</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <!-- Basic Information -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.teacher.id_for_label }}">Teacher</label>
+                                    {{ form.teacher }}
+                                    {% if form.teacher.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.teacher.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.subject.id_for_label }}">Subject</label>
+                                    {{ form.subject }}
+                                    {% if form.subject.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.subject.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Class Type and Division -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.class_type.id_for_label }}">Class Type</label>
+                                    {{ form.class_type }}
+                                    {% if form.class_type.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.class_type.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.division.id_for_label }}">Division</label>
+                                    {{ form.division }}
+                                    {% if form.division.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.division.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.batch.id_for_label }}">Batch</label>
+                                    {{ form.batch }}
+                                    {% if form.batch.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.batch.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Day and Time -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.day.id_for_label }}">Day</label>
+                                    {{ form.day }}
+                                    {% if form.day.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.day.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.start_time.id_for_label }}">Start Time</label>
+                                    {{ form.start_time }}
+                                    {% if form.start_time.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.start_time.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.end_time.id_for_label }}">End Time</label>
+                                    {{ form.end_time }}
+                                    {% if form.end_time.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.end_time.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Classroom -->
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="{{ form.classroom.id_for_label }}">Classroom</label>
+                                    {{ form.classroom }}
+                                    {% if form.classroom.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.classroom.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary">Update Schedule</button>
+                            <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function handleClassTypeChange() {
+        const classTypeSelect = document.getElementById('id_class_type');
+        const batchField = document.getElementById('id_batch');
+        
+        if (classTypeSelect.value === 'LAB') {
+            batchField.disabled = false;
+            batchField.required = true;
+            batchField.setAttribute('required', 'required');
+        } else {
+            batchField.disabled = true;
+            batchField.required = false;
+            batchField.removeAttribute('required');
+            batchField.value = '';
+        }
+    }
+
+    // Initialize form state
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add event listener for class type change
+        const classTypeSelect = document.getElementById('id_class_type');
+        if (classTypeSelect) {
+            classTypeSelect.addEventListener('change', handleClassTypeChange);
+            // Call once to set initial state
+            handleClassTypeChange();
+        }
+    });
+</script>
+{% endblock %} 

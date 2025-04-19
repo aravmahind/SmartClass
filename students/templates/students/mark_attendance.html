@@ -1,0 +1,67 @@
+{% extends 'students/base.html' %}
+
+{% block title %}Mark Attendance - SmartClass{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4>Mark Student Attendance</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'mark_attendance' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="student" class="form-label">Student</label>
+                        {{ form.student }}
+                        {% if form.student.errors %}
+                            <div class="text-danger">{{ form.student.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Subject</label>
+                        {{ form.subject }}
+                        {% if form.subject.errors %}
+                            <div class="text-danger">{{ form.subject.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="date" class="form-label">Date</label>
+                        {{ form.date }}
+                        {% if form.date.errors %}
+                            <div class="text-danger">{{ form.date.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Status</label>
+                        <div class="form-check">
+                            {{ form.status }}
+                            <label class="form-check-label" for="status">
+                                Present
+                            </label>
+                        </div>
+                        {% if form.status.errors %}
+                            <div class="text-danger">{{ form.status.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Mark Attendance</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(e) {
+        const submitButton = form.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.innerHTML = 'Marking Attendance...';
+    });
+});
+</script>
+{% endblock %}
+{% endblock %} 

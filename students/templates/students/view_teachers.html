@@ -1,0 +1,62 @@
+{% extends 'students/base.html' %}
+
+{% block title %}View Teachers - SmartClass{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4><i class="bi bi-person-badge"></i> Teachers List</h4>
+                    <a href="{% url 'register_teacher' %}" class="btn btn-primary">
+                        <i class="bi bi-person-plus"></i> Register New Teacher
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if teachers %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Department</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for teacher in teachers %}
+                                    <tr>
+                                        <td>{{ teacher.user.get_full_name }}</td>
+                                        <td>{{ teacher.department }}</td>
+                                        <td>{{ teacher.user.email }}</td>
+                                        <td>{{ teacher.phone }}</td>
+                                        <td>
+                                            <a href="{% url 'view_teacher_details' teacher.id %}" 
+                                               class="btn btn-sm btn-info">
+                                                <i class="bi bi-eye"></i> View Details
+                                            </a>
+                                            <a href="{% url 'update_teacher' teacher.id %}" 
+                                               class="btn btn-sm btn-primary">
+                                                <i class="bi bi-pencil"></i> Edit
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="bi bi-person-badge h1 text-muted"></i>
+                            <p class="text-muted mt-2">No teachers registered yet.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
