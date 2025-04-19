@@ -23,28 +23,28 @@ We used Object-Oriented Programming (OOP) to structure our models and views. Dja
 
 4. Installation
 Clone the repository:
-git clone https://github.com/aravmahind/SmartClass.git
-cd SmartClass
+   git clone https://github.com/aravmahind/SmartClass.git
+   cd SmartClass
 
 Install dependencies:
-pip install django
+   pip install django
 
 Run migrations:
-python manage.py migrate
+   python manage.py migrate
 
 Create a superuser:
-python manage.py createsuperuser
+   python manage.py createsuperuser
 
 Run the development server:
-python manage.py runserver
-Access the application at http://127.0.0.1:8000/
+   python manage.py runserver
+   Access the application at http://127.0.0.1:8000/
 
 
 5.	TOOLS & TECHNOLOGIES USED  
-•  Programming Language: Python 
-•  Framework: Django 
-•	Database: SQLite (default DB for Django projects) 
-•	Frontend: HTML, CSS 
-•	Backend Architecture: Django MVT (Model-View-Template) 
-•	Development Tools: Visual Studio Code 
-•	Version Control: Git & GitHub
+   Programming Language: Python 
+   Framework: Django 
+   Database: SQLite (default DB for Django projects) 
+   Frontend: HTML, CSS 
+   Backend Architecture: Django MVT (Model-View-Template) 
+   Development Tools: Visual Studio Code
+   Version Control: Git & GitHub
